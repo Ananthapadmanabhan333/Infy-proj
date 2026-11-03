@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: nexus360-api
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/nexus360}
+    username: ${DATABASE_USER:nexus}
+    password: ${DATABASE_PASSWORD:nexus_dev_password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+server:
+  port: ${PORT:8080}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

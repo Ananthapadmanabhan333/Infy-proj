@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexus360-postgres
+    environment:
+      POSTGRES_DB: nexus360
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: nexus_dev_password
+    ports: ["5432:5432"]
+    volumes: ["nexus_pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexus -d nexus360"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    container_name: nexus360-redis
+    ports: ["6379:6379"]
+  api:
+    build: ./backend
+    container_name: nexus360-api
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/nexus360
+      DATABASE_USER: nexus
+      DATABASE_PASSWORD: nexus_dev_password
+    ports: ["8080:8080"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+  web:
+    build: ./frontend
+    container_name: nexus360-web
+    ports: ["3000:80"]
+    depends_on: [api]
+volumes:
+  nexus_pgdata:
