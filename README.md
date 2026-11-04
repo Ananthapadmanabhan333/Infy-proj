@@ -24,6 +24,29 @@ Every figure on screen is computed from real database records. Seeded demonstrat
 | **Backend Container API (`iad1`)** | **[https://nexus360-api.vercel.app/api/health](https://nexus360-api.vercel.app/api/health)** | Java 21 / Spring Boot 3.5 OCI Container (`Dockerfile.vercel`) in `us-east-1` (`iad1`) |
 | **Database (`us-east-1`)** | **Neon PostgreSQL 17.11 (`nexus360`)** | 13 Flyway migrations (`V1`–`V13`) applied + 28 demo users across 11 roles seeded |
 
+### Live Demo Accounts & Login Credentials
+
+Sign in at **[https://nexus360-three.vercel.app/login](https://nexus360-three.vercel.app/login)** (you can also click any one-click role pill directly on the login screen):
+
+- **Shared Demo Password (all 28 seeded accounts):** `Nexus360!Demo`
+
+| Role | Email | User Name | Department | Primary Capabilities & Access |
+|---|---|---|---|---|
+| `SYSTEM_ADMIN` | `admin@demo.nexus360.io` | Aarav Mehta | Service Desk | Full platform access: all 36 modules, settings, simulation mode, ML training, AI governance, remediation playbooks |
+| `IT_ADMIN` | `rajesh.iyer@demo.nexus360.io` | Rajesh Iyer | Service Desk | IT administration, users, teams, SLA policies, workflows, integrations, observability, digital twin, predictions |
+| `IT_MANAGER` | `priya.raman@demo.nexus360.io` | Priya Raman | Enterprise Applications | Approvals, SLA & ops analytics, major incidents, PIRs, AI governance, remediation approval, FinOps & DEX |
+| `IT_MANAGER` | `kiran.rao@demo.nexus360.io` | Kiran Rao | Network & Infrastructure | Infrastructure & network management, approvals, observability, digital twin, remediation |
+| `IT_MANAGER` | `thomas.mathew@demo.nexus360.io` | Thomas Mathew | Information Security | Security & IT management, approvals, SecOps, compliance |
+| `INCIDENT_MANAGER` | `sunita.joshi@demo.nexus360.io` | Sunita Joshi | Service Desk | Major incident command, on-call overrides, PIRs, alert correlation, agent investigations, remediation execution |
+| `CHANGE_MANAGER` | `anil.kumar@demo.nexus360.io` | Anil Kumar | Enterprise Applications | Change calendar, freeze windows, CAB approvals, releases & deployments, digital twin change blast-radius simulator |
+| `ASSET_MANAGER` | `deepa.nair@demo.nexus360.io` | Deepa Nair | End User Computing | Hardware/software assets, licences, CMDB CIs, DEX endpoint fleet & proactive device rules |
+| `SECURITY_ANALYST` | `vikram.sec@demo.nexus360.io` | Vikram Sen | Information Security | Security incidents (containment/eradication), vulnerability scanner ingestion (SARIF/Trivy/CSV), 0–100 risk scoring |
+| `FINOPS_ANALYST` | `neha.finops@demo.nexus360.io` | Neha Kapoor | Finance | Cloud cost sources (FOCUS 1.x CSV), allocation rules, idle resource detection, budgets & right-sizing recommendations |
+| `SUPPORT_AGENT` | `meera.sharma@demo.nexus360.io` | Meera Sharma | Enterprise Applications | Service desk workspace, incident triage & resolution, problems, knowledge authoring, runbooks, SA AI & SA Agents |
+| `SUPPORT_AGENT` | `arjun.kapoor@demo.nexus360.io` | Arjun Kapoor | Network & Infrastructure | Network & infrastructure incident resolution, alerts, observability, CMDB |
+| `EMPLOYEE` | `amit.shah@demo.nexus360.io` | Amit Shah | Finance | Employee self-service portal (`/portal`), report issues, request catalogue items, check personal device health (`My Device`) |
+| `AUDITOR` | `ananya.bose@demo.nexus360.io` | Ananya Bose | Information Security | Strictly read-only compliance & governance access across dashboards, SLA reports, AI governance, SecOps, FinOps, and SHA-256 audit verification |
+
 ---
 
 ## Table of Contents
