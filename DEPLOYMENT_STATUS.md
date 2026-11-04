@@ -1,15 +1,13 @@
 # Deployment status
 
-_Last updated: 3 November 2026_
+_Last updated: 5 November 2026_
 
 | Target | Status |
 |---|---|
-| Neon (PostgreSQL) | **Not created.** Needs the account owner — follow [docs/NEON.md](docs/NEON.md). |
-| Render (API) | **Not deployed.** No Render access from the build environment. Blueprint ready: [`render.yaml`](render.yaml). |
-| Vercel (frontend) | **Not deployed.** Ready: [`frontend/vercel.json`](frontend/vercel.json). Deploying it before the API exists would publish a site that cannot sign anyone in. |
-| GitHub repository / CI | **Not created.** Workflow ready: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (has not run on GitHub yet). |
-
-**No public URL exists yet.** None is claimed anywhere in this repository.
+| GitHub repository / CI | **Deployed.** Repository pushed to [`https://github.com/Ananthapadmanabhan333/Infy-proj`](https://github.com/Ananthapadmanabhan333/Infy-proj) (`main` branch). Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml). |
+| Vercel (frontend) | **Deployed (`READY`).** Production URL: [`https://nexus360-three.vercel.app`](https://nexus360-three.vercel.app) (Project: `ananthapadmanabhan333s-projects/nexus360`, config: [`frontend/vercel.json`](frontend/vercel.json)). |
+| Neon (PostgreSQL) | **Awaiting database URL.** Create a Neon PostgreSQL project and copy the direct connection string — follow [docs/NEON.md](docs/NEON.md). |
+| Render (API) | **Blueprint ready (`render.yaml`).** Pre-configured with `FRONTEND_ORIGIN=https://nexus360-three.vercel.app`. Apply at `https://dashboard.render.com/blueprints` connected to `Ananthapadmanabhan333/Infy-proj`. |
 
 ## Verified locally (3 Nov 2026)
 
