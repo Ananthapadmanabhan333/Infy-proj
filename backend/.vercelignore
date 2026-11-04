@@ -1,0 +1,8 @@
+target/
+src/test/
+.env
+.env.*
+!.env.example
+*.log
+.idea/
+.vscode/

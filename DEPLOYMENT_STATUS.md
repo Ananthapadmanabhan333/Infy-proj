@@ -4,37 +4,13 @@ _Last updated: 5 November 2026_
 
 | Target | Status |
 |---|---|
-| GitHub repository / CI | **Deployed.** Repository pushed to [`https://github.com/Ananthapadmanabhan333/Infy-proj`](https://github.com/Ananthapadmanabhan333/Infy-proj) (`main` branch). Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml). |
-| Vercel (frontend) | **Deployed (`READY`).** Production URL: [`https://nexus360-three.vercel.app`](https://nexus360-three.vercel.app) (Project: `ananthapadmanabhan333s-projects/nexus360`, config: [`frontend/vercel.json`](frontend/vercel.json)). |
-| Neon (PostgreSQL) | **Awaiting database URL.** Create a Neon PostgreSQL project and copy the direct connection string — follow [docs/NEON.md](docs/NEON.md). |
-| Render (API) | **Blueprint ready (`render.yaml`).** Pre-configured with `FRONTEND_ORIGIN=https://nexus360-three.vercel.app`. Apply at `https://dashboard.render.com/blueprints` connected to `Ananthapadmanabhan333/Infy-proj`. |
+| **GitHub Repository / CI** | **Deployed (`main`).** [`https://github.com/Ananthapadmanabhan333/Infy-proj`](https://github.com/Ananthapadmanabhan333/Infy-proj) · Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml). |
+| **Neon (PostgreSQL 17)** | **Deployed & Migrated (`V1`–`V13`).** Dedicated `nexus360` database created on `ep-patient-cherry-awi8okum.c-12.us-east-1.aws.neon.tech` (`us-east-1`), leaving existing databases (`neondb`) untouched. Demo dataset (28 users across 11 roles, 9 departments, 10 services, 139 incidents, CMDB, alerts, observability, digital twin, predictive models, AI agents, remediation playbooks, SecOps, FinOps, DEX) seeded. |
+| **Backend API (`nexus360-api`)** | **Deployed (`READY`).** Production URL: [`https://nexus360-api.vercel.app`](https://nexus360-api.vercel.app) (Vercel Container Function via [`backend/Dockerfile.vercel`](backend/Dockerfile.vercel), pinned to `iad1` / `us-east-1` alongside Neon; Render blueprint also ready in [`render.yaml`](render.yaml)). |
+| **Frontend Web App (`nexus360`)** | **Deployed (`READY`).** Production URL: [`https://nexus360-three.vercel.app`](https://nexus360-three.vercel.app) (config: [`frontend/vercel.json`](frontend/vercel.json), proxying same-origin `/api/*` to `https://nexus360-api.vercel.app/api/*`). |
 
-## Verified locally (3 Nov 2026)
+## Verified on Live Production Deployment (5 Nov 2026)
 
-- Production jar (`mvn package`, Java 21) started **without** the local profile from a Neon-style
-  `postgresql://…?sslmode=…&channel_binding=…` URL: readiness `UP` in ~9 s, Flyway validation passed, anonymous API
-  call → `401`, disallowed `Origin` → `403`, security headers present.
-- The same jar refuses to start without `JWT_SECRET` ("JWT_SECRET must be at least 32 characters").
-- Release 2.1 (final code, 4 Nov 2026): backend 152/152, Vitest 410/410 and Playwright 21/21 (production build served by
-  `vite preview`, fresh demo database) — see [PROJECT_STATUS.md §R2.1](PROJECT_STATUS.md#r21-public-landing-page-and-account-access-4-nov-2026).
-- Release 2 production jar re-checked the same way: version 2.0.0, readiness `UP` in ~10 s, anonymous API and SSE
-  stream → `401`, disallowed `Origin` → `403`, demo accounts disabled with no password exposed under production
-  defaults. Migration V3 applied to Release 1 data is covered by `Release2MigrationTest`.
-
-## Not verified
-
-- Docker images (`backend/Dockerfile`, `frontend/Dockerfile`) and `docker compose up` were not built here: Docker
-  Desktop was stopped at the owner's request. CI does not build images either; Render builds the backend image on
-  first deploy.
-- Vercel's `/api` rewrite to Render and the hosted cookie flow can only be checked on the live deployment — use the
-  checklist in [DEPLOYMENT.md §10](DEPLOYMENT.md#10-post-deployment-verification).
-
-## Remaining manual actions (account owner)
-
-1. Create the GitHub repository and push (DEPLOYMENT.md §1).
-2. Create the Neon project and copy the direct connection string (§2).
-3. Apply the Render Blueprint and enter the prompted secrets (§3).
-4. If the Render hostname differs from `nexus360-api.onrender.com`, update the rewrite in `frontend/vercel.json` (§4).
-5. Import the repository into Vercel with root directory `frontend` (§4).
-6. Set `FRONTEND_ORIGIN` on Render to the Vercel domain (§5).
-7. Sign in with the bootstrap administrator, change the password, and run the verification checklist (§6, §10).
+- `GET https://nexus360-three.vercel.app/api/health` → `{"service":"SA API","version":"2.0.0","status":"UP","database":"UP"}`
+- `GET https://nexus360-three.vercel.app/api/auth/demo-accounts` → `enabled: true`, 28 demo accounts across all 11 roles (`SYSTEM_ADMIN`, `IT_ADMIN`, `IT_MANAGER`, `INCIDENT_MANAGER`, `CHANGE_MANAGER`, `ASSET_MANAGER`, `SECURITY_ANALYST`, `FINOPS_ANALYST`, `SUPPORT_AGENT`, `EMPLOYEE`, `AUDITOR`).
+- Flyway schema version `13` (`V1__core_schema.sql` through `V13__release4_finops_dex.sql`) applied and validated on Neon PostgreSQL 17.11.

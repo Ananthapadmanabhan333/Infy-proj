@@ -5,7 +5,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://nexus360-api.onrender.com/api/:path*" },
+    { "source": "/api/:path*", "destination": "https://nexus360-api.vercel.app/api/:path*" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }
   ],
   "headers": [

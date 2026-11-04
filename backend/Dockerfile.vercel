@@ -1,0 +1,29 @@
+# syntax=docker/dockerfile:1
+# SA API — Java 21 / Spring Boot for Vercel Container Functions (Dockerfile.vercel).
+
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn -B -q dependency:go-offline -DskipTests
+COPY src ./src
+RUN mvn -B -q -DskipTests package && \
+    java -Djarmode=tools -jar target/nexus360-api.jar extract --destination /app/extracted
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /app/extracted/ ./
+RUN java -Xshare:dump
+ENV JAVA_TOOL_OPTIONS="-Xshare:auto -XX:MaxRAMPercentage=75 -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/urandom"
+ENV SPRING_MAIN_LAZY_INITIALIZATION="true"
+ENV SPRING_DATA_JPA_REPOSITORIES_BOOTSTRAP_MODE="lazy"
+ENV SPRING_DATA_REDIS_REPOSITORIES_ENABLED="false"
+ENV SPRING_JPA_HIBERNATE_DDL_AUTO="none"
+ENV SPRING_JPA_PROPERTIES_HIBERNATE_BOOT_ALLOW_JDBC_METADATA_ACCESS="false"
+ENV SPRING_JPA_DATABASE_PLATFORM="org.hibernate.dialect.PostgreSQLDialect"
+ENV SPRING_FLYWAY_ENABLED="false"
+ENV DB_POOL_MIN_IDLE="0"
+ENV SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT="-1"
+ENV SWAGGER_ENABLED="false"
+ENV PORT=80
+EXPOSE 80
+ENTRYPOINT ["java", "-jar", "/app/nexus360-api.jar"]
