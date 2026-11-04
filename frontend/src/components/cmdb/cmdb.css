@@ -1,0 +1,133 @@
+/* CMDB dependency map (DependencyGraph.tsx). Colours come from the palette tokens in styles.css. */
+.cmdb-graph {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--secondary);
+  overflow: hidden;
+}
+
+.cmdb-graph-canvas {
+  display: block;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.cmdb-graph-canvas:active {
+  cursor: grabbing;
+}
+
+.cmdb-graph-tools {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.cmdb-graph-zoom {
+  min-width: 38px;
+  padding: 0 4px;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.cmdb-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.cmdb-node:focus-visible rect:first-child {
+  stroke: var(--gold-light);
+  stroke-width: 3;
+}
+
+.cmdb-node-glyph {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.cmdb-node-name {
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.cmdb-node-meta {
+  font-size: 9.5px;
+}
+
+.cmdb-node-alerts {
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.cmdb-graph-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 10px;
+  color: var(--text);
+}
+
+.cmdb-graph-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cmdb-graph-legend .swatch {
+  display: inline-block;
+  width: 14px;
+  height: 8px;
+  border-radius: 3px;
+  border: 2px solid var(--bronze);
+}
+
+.cmdb-graph-legend .swatch.gold {
+  border-color: var(--gold);
+}
+
+.cmdb-graph-legend .swatch.champagne {
+  border-color: var(--gold-light);
+}
+
+.cmdb-graph-legend .swatch.warning {
+  border-color: var(--warning);
+}
+
+.cmdb-graph-legend .swatch.dashed {
+  border-style: dashed;
+  height: 0;
+  border-width: 1px 0 0;
+}
+
+.cmdb-graph-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 10px 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--panel-raised);
+  font-size: 11px;
+}
+
+@media (max-width: 599px) {
+  .cmdb-graph-card {
+    flex-wrap: wrap;
+  }
+}

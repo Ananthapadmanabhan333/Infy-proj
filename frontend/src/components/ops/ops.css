@@ -1,0 +1,68 @@
+/* Release 3 operations modules (alerts, CMDB, assets): small additions on top of styles.css. */
+.chip-toggle {
+  cursor: pointer;
+  font-size: 10px;
+  padding: 5px 10px;
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+}
+
+.chip-toggle:hover {
+  border-color: var(--bronze);
+}
+
+.chip-toggle[aria-pressed='true'] {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+  color: var(--gold-light);
+}
+
+.chip-toggle:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.data-table tr.row-invalid td {
+  background: var(--critical-soft);
+}
+
+.kv-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kv-list li {
+  display: inline-flex;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 10px;
+}
+
+.kv-list li span {
+  padding: 3px 7px;
+  overflow-wrap: anywhere;
+}
+
+.kv-list li span:first-child {
+  background: var(--panel-raised);
+  color: var(--muted);
+  border-right: 1px solid var(--line);
+}
+
+.code-block {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--secondary);
+  font-size: 10px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--text);
+}

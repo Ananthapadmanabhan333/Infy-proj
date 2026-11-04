@@ -1,0 +1,20 @@
+/* Compliance / share meter used in analytics and SLA tables. */
+@layer components {
+  .an-meter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-width: 110px;
+  }
+
+  .an-meter .health-track {
+    min-width: 50px;
+  }
+
+  .an-meter b {
+    min-width: 40px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}

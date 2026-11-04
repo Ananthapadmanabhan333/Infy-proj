@@ -1,0 +1,61 @@
+/* Release 4 simulation mode: global banner and the "Include simulated data" switch. */
+.sim-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border: 1px dashed rgba(229, 174, 98, 0.7);
+  border-radius: 9px;
+  background: rgba(229, 174, 98, 0.1);
+  color: #f0d3a6;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.sim-banner > svg {
+  flex-shrink: 0;
+  color: var(--warning);
+}
+
+.sim-banner b {
+  color: var(--warning);
+  letter-spacing: 0.4px;
+}
+
+.sim-banner .sim-banner-meta {
+  color: var(--muted);
+}
+
+.sim-banner a {
+  margin-left: auto;
+  color: var(--gold-light);
+  text-decoration: underline;
+}
+
+.sim-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.sim-toggle[data-on='true'] {
+  color: var(--warning);
+}
+
+.sim-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px dashed rgba(229, 174, 98, 0.7);
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: rgba(229, 174, 98, 0.08);
+  color: #f0d3a6;
+  font-size: 11px;
+}

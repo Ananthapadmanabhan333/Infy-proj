@@ -1,27 +1,202 @@
+# Production-safe defaults. Secrets have no fallback values: the application refuses to start without them.
+# Local development uses the "local" profile (application-local.yml).
 spring:
   application:
     name: nexus360-api
+  # @Async work (workflow runs, integration deliveries) is capped below the DB pool (DB_POOL_MAX, default 8) so background
+  # work can never hold every connection and starve request threads.
+  task:
+    execution:
+      pool:
+        core-size: ${ASYNC_POOL_SIZE:4}
+        max-size: ${ASYNC_POOL_SIZE:4}
+        queue-capacity: 10000
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/nexus360}
-    username: ${DATABASE_USER:nexus}
-    password: ${DATABASE_PASSWORD:nexus_dev_password}
+    # Accepts a JDBC URL or a provider URL such as postgresql://user:pass@host/db?sslmode=require (see DatabaseUrlEnvironmentPostProcessor).
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER:}
+    password: ${DATABASE_PASSWORD:}
+    hikari:
+      pool-name: nexus360
+      maximum-pool-size: ${DB_POOL_MAX:8}
+      minimum-idle: ${DB_POOL_MIN_IDLE:1}
+      connection-timeout: 20000
+      idle-timeout: 240000
+      max-lifetime: 1200000
+      validation-timeout: 5000
   jpa:
-    hibernate:
-      ddl-auto: update
     open-in-view: false
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
+        jdbc:
+          time_zone: UTC
+          batch_size: 50
+        default_batch_fetch_size: 50
+        order_inserts: true
+        order_updates: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
   jackson:
+    time-zone: UTC
     serialization:
       write-dates-as-timestamps: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379}
+  cache:
+    type: simple
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 25s
+
 server:
   port: ${PORT:8080}
+  shutdown: graceful
+  # Tomcat's RemoteIpValve reads X-Forwarded-For right to left and only trusts entries added by internal proxies
+  # (Render's load balancer), so clients cannot spoof their address for rate limiting or audit records.
+  forward-headers-strategy: native
+  compression:
+    enabled: true
+  error:
+    include-message: never
+    include-stacktrace: never
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  health:
+    redis:
+      enabled: ${REDIS_ENABLED:false}
+    # SMTP reachability must never take the API's liveness/readiness down; e-mail health is in /api/admin/system-health.
+    mail:
+      enabled: false
+
 springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: ${SWAGGER_ENABLED:true}
   swagger-ui:
     path: /swagger-ui.html
+    enabled: ${SWAGGER_ENABLED:true}
+  default-produces-media-type: application/json
+
+app:
+  security:
+    jwt-secret: ${JWT_SECRET}
+    access-token-minutes: ${ACCESS_TOKEN_MINUTES:15}
+    refresh-token-days: ${REFRESH_TOKEN_DAYS:7}
+    cookie-secure: ${COOKIE_SECURE:true}
+    cookie-same-site: ${COOKIE_SAME_SITE:None}
+    allowed-origins: ${FRONTEND_ORIGIN}
+    max-failed-logins: 5
+    lockout-minutes: 15
+    # Sessions signed in without "remember me" use a browser-session cookie and end this many hours after sign-in.
+    browser-session-hours: ${BROWSER_SESSION_HOURS:12}
+  rate-limit:
+    enabled: ${RATE_LIMIT_ENABLED:true}
+    login-per-minute: ${RATE_LIMIT_LOGIN_PER_MINUTE:10}
+    api-per-minute: ${RATE_LIMIT_API_PER_MINUTE:600}
+    inbound-per-minute: ${RATE_LIMIT_INBOUND_PER_MINUTE:120}
+    # Per-user SA AI budget (0 disables). Applies even when RATE_LIMIT_ENABLED=false because it protects LLM cost.
+    ai-per-minute: ${RATE_LIMIT_AI_PER_MINUTE:30}
+  redis:
+    enabled: ${REDIS_ENABLED:false}
+  bootstrap-admin:
+    email: ${BOOTSTRAP_ADMIN_EMAIL:}
+    password: ${BOOTSTRAP_ADMIN_PASSWORD:}
+    full-name: ${BOOTSTRAP_ADMIN_NAME:Platform Administrator}
+  demo:
+    seed: ${APP_DEMO_SEED:false}
+    password: ${APP_DEMO_PASSWORD:}
+    show-password: ${APP_DEMO_SHOW_PASSWORD:false}
+  ai:
+    # anthropic | none. With "none" (or no key) every AI feature uses the labelled deterministic fallback engine.
+    provider: ${AI_PROVIDER:none}
+    api-key: ${AI_API_KEY:}
+    model: ${AI_MODEL:claude-opus-5-5}
+    base-url: ${AI_BASE_URL:}
+    timeout-seconds: ${AI_TIMEOUT_SECONDS:60}
+    # Thinking tokens count towards this limit on current Claude models; keep it generous.
+    max-tokens: ${AI_MAX_TOKENS:8000}
+    # low | medium | high — short structured tasks (classify, summarise) work well at low.
+    effort: ${AI_EFFORT:low}
+  sla:
+    scheduler-enabled: ${SLA_SCHEDULER_ENABLED:true}
+    evaluation-interval-ms: ${SLA_EVALUATION_INTERVAL_MS:60000}
+  workflow:
+    max-depth: 3
+    max-actions: 20
+    retry-poll-interval-ms: 15000
+    # SCHEDULED workflows: poll interval and the maximum number of active incidents evaluated per run.
+    scheduler-enabled: ${WORKFLOW_SCHEDULER_ENABLED:true}
+    schedule-poll-interval-ms: ${WORKFLOW_SCHEDULE_POLL_INTERVAL_MS:60000}
+    scheduled-max-incidents: 200
+  integrations:
+    encryption-key: ${INTEGRATION_ENCRYPTION_KEY:}
+    allow-private-targets: ${INTEGRATIONS_ALLOW_PRIVATE_TARGETS:false}
+    timeout-seconds: 10
+  attachments:
+    max-bytes: 5242880
+  # Absolute web-app URL for links in e-mails (invitations, resets, notifications, status page). Defaults to the first FRONTEND_ORIGIN.
+  public-url: ${APP_PUBLIC_URL:}
+  mail:
+    # Optional SMTP. Without MAIL_HOST every e-mail is recorded in the outbox as SKIPPED (nothing claims delivery).
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    from: ${MAIL_FROM:}
+    starttls: ${MAIL_STARTTLS:true}
+    outbox-enabled: ${MAIL_OUTBOX_ENABLED:true}
+    poll-interval-ms: ${MAIL_POLL_INTERVAL_MS:30000}
+    max-attempts: ${MAIL_MAX_ATTEMPTS:5}
+    timeout-ms: 10000
+  alerts:
+    # Release 3 BE-3: escalation of unacknowledged alerts (advisory lock 360008) and AWS SNS subscription confirmation.
+    escalation-enabled: ${ALERT_ESCALATION_ENABLED:true}
+    escalation-poll-interval-ms: ${ALERT_ESCALATION_POLL_INTERVAL_MS:60000}
+    sns:
+      auto-confirm: ${ALERT_SNS_AUTO_CONFIRM:true}
+  simulation:
+    # Release 4 BE-5: simulation mode can only be switched on where SIMULATION_ALLOWED=true (off in production unless set).
+    allowed: ${SIMULATION_ALLOWED:false}
+    scheduler-enabled: ${SIMULATION_SCHEDULER_ENABLED:true}
+    tick-interval-ms: ${SIMULATION_TICK_INTERVAL_MS:60000}
+  observability:
+    # Alert correlation runs on one background worker after the alert commits (true), or inline (false, tests only).
+    correlation-async: ${CORRELATION_ASYNC:true}
+    # OTLP/HTTP JSON request limits (413 above max-request-bytes, partial success above max-items-per-request).
+    max-request-bytes: ${OTLP_MAX_REQUEST_BYTES:2097152}
+    max-items-per-request: ${OTLP_MAX_ITEMS_PER_REQUEST:10000}
+    # Roll-ups (lock 360011), retention purge (360012), anomaly detection (360013), Prometheus pulls (360014).
+    jobs-enabled: ${OBSERVABILITY_JOBS_ENABLED:true}
+    rollup-interval-ms: 60000
+    anomaly-interval-ms: 60000
+    pull-poll-interval-ms: 30000
+    retention-cron: "0 50 3 * * *"
+  reports:
+    scheduler-enabled: ${REPORT_SCHEDULER_ENABLED:true}
+    poll-interval-ms: ${REPORT_POLL_INTERVAL_MS:60000}
+    runs-kept-per-schedule: 30
+
+logging:
+  level:
+    root: INFO
+    com.nexus360: INFO
+    org.hibernate.SQL: WARN

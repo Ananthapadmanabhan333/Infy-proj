@@ -1,0 +1,285 @@
+/* Administration-area styles (Users, Audit Logs, Integrations, Settings, Notifications, Profile, Announcements).
+   Tokens come from styles.css (:root); kept in the components layer so Tailwind utilities still win. */
+@layer components {
+  /* Tinted icon tiles (the base .icon-tile is gold). */
+  .icon-tile.critical {
+    background: var(--critical-soft);
+    border-color: rgba(229, 109, 104, 0.32);
+    color: var(--critical);
+  }
+
+  .icon-tile.warning {
+    background: var(--warning-soft);
+    border-color: rgba(229, 174, 98, 0.32);
+    color: var(--warning);
+  }
+
+  .icon-tile.success {
+    background: var(--success-soft);
+    border-color: rgba(73, 184, 137, 0.32);
+    color: var(--success);
+  }
+
+  .icon-tile.neutral {
+    background: #2a251f;
+    border-color: #4b3b29;
+    color: #c9bfaf;
+  }
+
+  .icon-tile.sm {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  /* Text / date input sized like FilterSelect for toolbars. */
+  .toolbar-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .toolbar-input {
+    height: 36px;
+    min-width: 0;
+    padding: 0 10px;
+    border: 1px solid #3f3326;
+    border-radius: var(--radius-control);
+    background: var(--secondary);
+    color: #d9cfc1;
+    font-size: 11px;
+    font-weight: 600;
+    color-scheme: dark;
+    outline: none;
+  }
+
+  .toolbar-input:focus {
+    border-color: var(--bronze);
+    box-shadow: 0 0 0 3px #d6b77a14;
+  }
+
+  .toolbar-input.active {
+    border-color: rgba(214, 183, 122, 0.55);
+    color: var(--gold-light);
+    background: rgba(214, 183, 122, 0.08);
+  }
+
+  .toolbar-input::placeholder {
+    color: #8d8478;
+    font-weight: 500;
+  }
+
+  /* Table rows that need a second look (failed / denied audit events). */
+  .data-table tr.attention > td:first-child {
+    box-shadow: inset 2px 0 0 var(--critical);
+  }
+
+  /* Clickable card (integrations, health tiles): whole card is one button via .card-hit. */
+  .admin-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.15s ease;
+  }
+
+  .admin-card:hover {
+    border-color: var(--bronze);
+  }
+
+  .admin-card:has(.card-hit:focus-visible) {
+    border-color: var(--gold);
+  }
+
+  .admin-card .card-hit:focus-visible {
+    outline: none;
+  }
+
+  .admin-card .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    font-size: 10px;
+    color: var(--muted);
+    border-top: 1px solid var(--line-soft);
+    padding-top: 9px;
+    margin-top: auto;
+  }
+
+  .admin-card .card-target {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10px;
+    color: #cfc4b3;
+    background: var(--secondary);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    padding: 6px 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Status tile (System Health). */
+  .health-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .health-tile .tile-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .health-tile .tile-head h3 {
+    margin: 0;
+    font: 700 12px Manrope, sans-serif;
+    color: #f0e8dc;
+  }
+
+  .health-tile .tile-head small {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 2px;
+  }
+
+  .health-tile dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 12px;
+    margin: 0;
+    font-size: 10px;
+  }
+
+  .health-tile dt {
+    color: #988c7a;
+  }
+
+  .health-tile dd {
+    margin: 0;
+    color: #eee4d6;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  /* Setting / preference rows with a description and a control on the right. */
+  .setting-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .setting-row:last-child {
+    border-bottom: 0;
+  }
+
+  .setting-row > div:first-child {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .setting-row b {
+    display: block;
+    font-size: 11px;
+    color: #eee4d6;
+  }
+
+  .setting-row small {
+    display: block;
+    color: #968b7c;
+    font-size: 10px;
+    line-height: 1.5;
+    margin-top: 3px;
+  }
+
+  .setting-row code {
+    font-size: 9px;
+    color: #a8987f;
+  }
+
+  /* Notification inbox rows (page version of the bell panel items). */
+  .inbox-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 10px;
+    border-radius: 9px;
+    border: 1px solid transparent;
+  }
+
+  .inbox-row + .inbox-row {
+    margin-top: 2px;
+  }
+
+  .inbox-row:hover {
+    background: #241f1a;
+    border-color: var(--line-soft);
+  }
+
+  .inbox-row.unread {
+    background: #231e18;
+    border-color: #3a2f22;
+  }
+
+  .inbox-row .inbox-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .inbox-row .inbox-body b {
+    display: block;
+    font-size: 12px;
+    color: #eee4d6;
+  }
+
+  .inbox-row.unread .inbox-body b {
+    color: var(--gold-light);
+  }
+
+  .inbox-row .inbox-body p {
+    margin: 3px 0 0;
+    font-size: 11px;
+    line-height: 1.55;
+    color: #cbbfae;
+  }
+
+  .inbox-row .inbox-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin-top: 6px;
+    font-size: 9px;
+    color: #968b7c;
+  }
+
+  .unread-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px rgba(214, 183, 122, 0.6);
+    display: inline-block;
+  }
+
+  /* Profile hero. */
+  .profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .profile-hero .avatar.xl {
+    width: 72px;
+    height: 72px;
+    font-size: 22px;
+  }
+}

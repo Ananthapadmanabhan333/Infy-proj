@@ -1,0 +1,336 @@
+/* On-call (Release 3 BE-4): shift timeline and small additions on top of styles.css. */
+.shift-timeline {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.shift-axis,
+.shift-day {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.shift-axis-ticks {
+  position: relative;
+  height: 14px;
+  font-size: 9px;
+  color: var(--muted);
+}
+
+.shift-axis-ticks span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.shift-axis-ticks span:first-child {
+  transform: none;
+}
+
+.shift-axis-ticks span:last-child {
+  transform: translateX(-100%);
+}
+
+.shift-day-label {
+  font-size: 10px;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.shift-day-label b {
+  display: block;
+  color: var(--text);
+  font-size: 11px;
+}
+
+.shift-day[data-today='true'] .shift-day-label b {
+  color: var(--gold);
+}
+
+.shift-lanes {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(to right, transparent 0, transparent calc(25% - 1px), var(--line-soft) calc(25% - 1px), var(--line-soft) 25%),
+    var(--secondary);
+  min-width: 0;
+}
+
+.shift-lane {
+  position: relative;
+  height: 22px;
+}
+
+.shift-lane.secondary {
+  height: 16px;
+}
+
+.shift-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 5px;
+  border: 1px solid var(--bronze);
+  border-radius: 5px;
+  background: var(--gold-soft);
+  color: var(--gold-light);
+  font-size: 9.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+
+.shift-bar[data-source='OVERRIDE'] {
+  border-style: dashed;
+  border-color: var(--gold-light);
+  background: rgba(241, 223, 186, 0.12);
+}
+
+.shift-bar[data-source='HOLIDAY_COVER'] {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.shift-bar[data-source='AVAILABILITY'] {
+  border-color: var(--success);
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.shift-lane.secondary .shift-bar {
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+.shift-bar[data-before='true'] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.shift-bar[data-after='true'] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.shift-now {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--critical);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.shift-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.shift-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.shift-legend i {
+  display: inline-block;
+  width: 14px;
+  height: 9px;
+  border-radius: 3px;
+  border: 1px solid var(--bronze);
+  background: var(--gold-soft);
+}
+
+.shift-legend i[data-source='OVERRIDE'] {
+  border-style: dashed;
+  border-color: var(--gold-light);
+}
+
+.shift-legend i[data-source='HOLIDAY_COVER'] {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+}
+
+.shift-legend i[data-source='AVAILABILITY'] {
+  border-color: var(--success);
+  background: var(--success-soft);
+}
+
+.oncall-now-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
+
+.oncall-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--panel-raised);
+  min-width: 0;
+}
+
+.oncall-person {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.oncall-person > div {
+  min-width: 0;
+}
+
+.oncall-person small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.level-ladder {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: level;
+}
+
+.level-ladder li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  min-width: 0;
+}
+
+.level-ladder li .level-no {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--bronze);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.war-room {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.war-room li {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px 8px 14px;
+  border-left: 2px solid var(--line-strong);
+  background: var(--secondary);
+  border-radius: 0 8px 8px 0;
+  min-width: 0;
+}
+
+.war-room li[data-type='DECISION'] {
+  border-left-color: var(--gold);
+}
+
+.war-room li[data-type='INVESTIGATION'] {
+  border-left-color: var(--warning);
+}
+
+.war-room li[data-type='ACTION'] {
+  border-left-color: var(--gold-light);
+}
+
+.war-room li[data-type='STATUS'] {
+  border-left-color: var(--success);
+}
+
+.metric-tiles {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 130px), 1fr));
+}
+
+.metric-tiles > div {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--secondary);
+  min-width: 0;
+}
+
+.metric-tiles small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.metric-tiles b {
+  display: block;
+  margin-top: 3px;
+  font-size: 16px;
+  color: var(--gold-light);
+}
+
+.risk-meter {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+
+.risk-meter span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 3px;
+  background: var(--success);
+}
+
+.risk-meter[data-level='MEDIUM'] span {
+  background: var(--warning);
+}
+
+.risk-meter[data-level='HIGH'] span {
+  background: var(--critical);
+}
+
+@media (max-width: 599px) {
+  .shift-axis,
+  .shift-day {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .shift-bar {
+    padding: 0 2px;
+    font-size: 8.5px;
+  }
+}

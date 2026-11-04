@@ -1,0 +1,683 @@
+/* SA AI workspace (reference screen 5). Palette tokens come from styles.css (:root). */
+@layer components {
+  .nx-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  /* ------------------------------------------------------ engine status */
+  .nx-engine {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--secondary);
+    font-size: 11px;
+    line-height: 1.5;
+    color: #d6cbbb;
+  }
+
+  .nx-engine > svg {
+    color: var(--gold);
+  }
+
+  .nx-engine > span:first-of-type {
+    flex: 1 1 240px;
+    min-width: 0;
+  }
+
+  .nx-engine b {
+    color: var(--text);
+  }
+
+  .nx-engine.fallback {
+    border-style: dashed;
+    border-color: #6b604f;
+  }
+
+  .nx-engine.llm {
+    border-color: #6e5331;
+    background: #1f1a14;
+  }
+
+  .nx-engine.error > svg {
+    color: var(--critical);
+  }
+
+  .nx-engine-error {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--critical);
+    font-size: 10px;
+  }
+
+  /* --------------------------------------------------- capability tiles */
+  .nx-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .nx-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 16px 12px 14px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--line);
+    background: var(--panel);
+    text-align: center;
+    transition:
+      border-color 0.15s,
+      background 0.15s;
+  }
+
+  .nx-tile > svg {
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+
+  .nx-tile b {
+    font: 700 13px Manrope, 'DM Sans', sans-serif;
+    color: var(--text);
+  }
+
+  .nx-tile small {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .nx-tile:hover {
+    border-color: var(--bronze);
+    background: #221f1b;
+  }
+
+  .nx-tile.selected {
+    border-color: var(--gold);
+    background: #2a231a;
+    box-shadow: inset 0 0 0 1px rgba(214, 183, 122, 0.25);
+  }
+
+  /* --------------------------------------------------------- flow panel */
+  .nx-flow-form {
+    display: grid;
+    gap: 10px;
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .nx-flow-form > .field {
+    margin: 0;
+  }
+
+  /* Line the buttons up with the picker input (below its label). */
+  .nx-flow-form > div:last-child {
+    padding-top: 24px;
+  }
+
+  .nx-working {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .nx-sub {
+    font: 700 11px Manrope, 'DM Sans', sans-serif;
+    color: var(--gold-light);
+    margin: 8px 0 4px;
+  }
+
+  .nx-hypotheses {
+    display: grid;
+    gap: 10px;
+    list-style: decimal;
+    padding-left: 18px;
+  }
+
+  .nx-hypotheses small {
+    display: block;
+    margin-top: 6px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nx-meter {
+    height: 6px;
+    border-radius: 6px;
+    background: #39332b;
+    overflow: hidden;
+  }
+
+  .nx-meter i {
+    display: block;
+    height: 100%;
+    border-radius: 6px;
+    background: var(--gold);
+  }
+
+  .nx-checklist {
+    display: grid;
+    gap: 6px;
+  }
+
+  .nx-checklist li {
+    display: flex;
+    gap: 7px;
+    align-items: flex-start;
+  }
+
+  .nx-checklist li > svg {
+    margin-top: 3px;
+    color: var(--success);
+  }
+
+  .nx-runbook {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    border: 1px solid #5f4a2f;
+    background: #1e1a15;
+  }
+
+  .nx-runbook > svg {
+    color: var(--gold);
+  }
+
+  .nx-runbook small {
+    display: block;
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  .nx-runbook a {
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+
+  .nx-links {
+    display: grid;
+    gap: 6px;
+  }
+
+  .nx-links li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .nx-links li > svg {
+    color: var(--gold);
+  }
+
+  .nx-links a {
+    color: var(--gold-light);
+  }
+
+  .nx-links a:hover {
+    text-decoration: underline;
+  }
+
+  .nx-segment {
+    display: inline-flex;
+    padding: 2px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--secondary);
+  }
+
+  .nx-segment button {
+    border: 0;
+    background: transparent;
+    padding: 4px 9px;
+    border-radius: 6px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .nx-segment button.on {
+    background: var(--gold-soft);
+    color: var(--gold-light);
+  }
+
+  .nx-forecast-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-bottom: 6px;
+  }
+
+  .nx-forecast-head small {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .nx-forecast-head b {
+    font: 800 22px Manrope, sans-serif;
+    margin-right: 7px;
+  }
+
+  .nx-forecast-head span {
+    font-size: 10px;
+  }
+
+  .nx-chart {
+    height: 190px;
+  }
+
+  /* data table (answers, forecast by service) */
+  .nx-data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 10px;
+  }
+
+  .nx-data th,
+  .nx-data td {
+    padding: 4px 6px 4px 0;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .nx-data thead th {
+    font-weight: 600;
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  .nx-data tbody th {
+    font-weight: 500;
+    color: #cbbfae;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nx-data td:nth-child(2) {
+    width: 45%;
+  }
+
+  .nx-data td:last-child,
+  .nx-data th:last-child {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    padding-right: 0;
+  }
+
+  .nx-basis {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .nx-basis svg {
+    margin-top: 2px;
+  }
+
+  /* workflow draft */
+  .nx-wf {
+    display: grid;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .nx-wf-node {
+    display: grid;
+    gap: 4px;
+    padding: 9px 11px;
+    border-radius: 9px;
+    border: 1px solid #4a3a28;
+    background: #1b1917;
+  }
+
+  .nx-wf-node.yes {
+    border-color: #3f6a4c;
+  }
+
+  .nx-wf-node.no {
+    border-color: #5e4630;
+  }
+
+  .nx-wf-kind {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nx-wf-arrow {
+    justify-self: center;
+    color: var(--bronze);
+  }
+
+  .nx-wf-rules,
+  .nx-wf-actions {
+    display: grid;
+    gap: 4px;
+  }
+
+  .nx-wf-rules i {
+    color: var(--muted);
+  }
+
+  .nx-wf-actions {
+    list-style: decimal;
+    padding-left: 16px;
+  }
+
+  .nx-wf-actions li {
+    display: grid;
+    gap: 3px;
+  }
+
+  /* ------------------------------------------------------- ask SA AI */
+  .nx-ask {
+    display: grid;
+    gap: 10px;
+  }
+
+  .nx-ask-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 6px 6px 14px;
+    border-radius: 11px;
+    border: 1px solid #6e5331;
+    background: var(--panel);
+  }
+
+  .nx-ask-bar:focus-within {
+    border-color: var(--gold);
+  }
+
+  .nx-ask-bar > svg {
+    color: var(--gold);
+  }
+
+  .nx-ask-bar input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--text);
+    padding: 9px 4px;
+    font-size: 12px;
+  }
+
+  .nx-ask-bar input::placeholder {
+    color: #8d8376;
+  }
+
+  .nx-ask-bar button {
+    width: 38px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 8px;
+    background: var(--gold);
+    color: #1b140b;
+    display: grid;
+    place-items: center;
+  }
+
+  .nx-ask-bar button:disabled {
+    opacity: 0.55;
+  }
+
+  .nx-ask-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .nx-ask-foot > small {
+    font-size: 9px;
+    color: #81786c;
+  }
+
+  .nx-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .nx-suggestions button {
+    padding: 6px 10px;
+    border-radius: 14px;
+    border: 1px solid #4b3b29;
+    background: #211d18;
+    color: #ddc9a5;
+    font-size: 10px;
+  }
+
+  .nx-suggestions button:hover:not(:disabled) {
+    border-color: var(--bronze);
+  }
+
+  .nx-thread {
+    display: grid;
+    gap: 14px;
+    max-height: 560px;
+    overflow-y: auto;
+    padding: 14px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--line);
+    background: var(--secondary);
+  }
+
+  .nx-bubble-q {
+    justify-self: end;
+    max-width: min(85%, 640px);
+    padding: 9px 13px;
+    border-radius: 12px 12px 3px 12px;
+    background: #3a2c1d;
+    border: 1px solid #775b35;
+    color: var(--gold-light);
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .nx-bubble-a {
+    display: flex;
+    gap: 8px;
+    max-width: min(100%, 860px);
+  }
+
+  .nx-bubble-avatar {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid #8a683b;
+    background: #2e2418;
+    color: var(--gold-light);
+  }
+
+  /* ------------------------------------------------- insight of the day */
+  .nx-insight {
+    border-color: #6e5331;
+    background: linear-gradient(135deg, #2a2219 0%, var(--panel) 60%);
+  }
+
+  .nx-insight-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .nx-insight-head h3 {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 13px;
+    color: var(--gold-light);
+  }
+
+  .nx-insight-head h3 svg {
+    color: var(--gold);
+  }
+
+  .nx-insight-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .nx-insight-body > div:first-child {
+    flex: 1 1 220px;
+  }
+
+  .nx-insight-text {
+    margin: 0;
+    font: 600 14px/1.5 Manrope, 'DM Sans', sans-serif;
+    color: var(--gold-light);
+  }
+
+  .nx-insight-text b {
+    color: var(--gold);
+  }
+
+  .nx-insight-detail {
+    margin: 6px 0 0;
+    font-size: 11px;
+    line-height: 1.55;
+    color: #cfc3b1;
+  }
+
+  .nx-insight-spark {
+    display: grid;
+    justify-items: end;
+    gap: 2px;
+    flex: 0 0 auto;
+  }
+
+  .nx-insight-spark small {
+    font-size: 9px;
+    color: var(--gold-light);
+  }
+
+  .nx-insight-spark small.muted-text {
+    color: var(--muted);
+  }
+
+  /* ---------------------------------------------------- recent analyses */
+  .nx-recent-list {
+    display: grid;
+  }
+
+  .nx-recent-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 4px;
+    border: 0;
+    border-bottom: 1px solid var(--line-soft);
+    background: transparent;
+    text-align: left;
+    color: inherit;
+  }
+
+  .nx-recent-list li:last-child .nx-recent-row {
+    border-bottom: 0;
+  }
+
+  button.nx-recent-row:hover:not(:disabled) {
+    background: #221f1b;
+  }
+
+  .nx-recent-row b {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #eee4d6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nx-recent-row small {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 3px;
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  .nx-recent-row small .badge {
+    font-size: 8px;
+    padding: 1px 5px;
+  }
+
+  .nx-recent-row > svg {
+    color: #93816a;
+  }
+
+  .nx-recent-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--gold-soft);
+    color: var(--gold);
+  }
+
+  @media (max-width: 599px) {
+    .nx-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .nx-flow-form {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .nx-flow-form > div:last-child {
+      padding-top: 0;
+    }
+
+    .nx-insight-spark {
+      justify-items: start;
+    }
+
+    .nx-thread {
+      padding: 10px;
+      max-height: none;
+    }
+  }
+}

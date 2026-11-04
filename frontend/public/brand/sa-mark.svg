@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="t">
+  <title id="t">SA</title>
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="86" y2="0">
+      <stop offset="0" stop-color="#D6B77A"/>
+      <stop offset="1" stop-color="#F1DFBA"/>
+    </linearGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#24201C"/>
+      <stop offset="1" stop-color="#101012"/>
+    </linearGradient>
+  </defs>
+  <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="14" fill="url(#b)" stroke="#D6B77A" stroke-opacity="0.5" stroke-width="1.5"/>
+  <g transform="translate(10.5 17) scale(0.5)">
+    <g fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M27.08 9.47A12.5 12.5 0 1 0 17.5 30A12.5 12.5 0 1 1 7.92 50.53"/>
+      <path d="M47 55L64 5L81 55"/>
+    </g>
+    <circle cx="64" cy="42" r="4" fill="url(#g)"/>
+  </g>
+</svg>

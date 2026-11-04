@@ -1,0 +1,213 @@
+/* Command Center (reference screen 1). Area styles only — shared tokens and primitives live in styles.css. */
+@layer components {
+  .cc-row {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .cc-quick {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cc-trend-chart {
+    position: relative;
+  }
+
+  .cc-predicted {
+    position: absolute;
+    top: 0;
+    right: 6px;
+    z-index: 2;
+    display: grid;
+    gap: 1px;
+    padding: 6px 10px;
+    border: 1px solid #6e5331;
+    border-radius: 9px;
+    background: rgba(27, 24, 22, 0.94);
+    box-shadow: 0 8px 22px #0006;
+    font-size: 10px;
+    color: var(--gold-light);
+    text-align: right;
+    pointer-events: none;
+  }
+
+  .cc-predicted b {
+    font: 800 16px Manrope, sans-serif;
+    color: var(--text);
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cc-predicted span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    font-weight: 700;
+  }
+
+  .cc-predicted small {
+    color: var(--muted);
+    font-size: 9px;
+  }
+
+  .cc-chart-note {
+    margin: 6px 0 0;
+    font-size: 9px;
+    color: #8d8375;
+  }
+
+  .cc-service-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cc-service-tile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    min-width: 0;
+    padding: 11px;
+    border: 1px solid #3d3226;
+    border-radius: 10px;
+    background: linear-gradient(140deg, #221e1a, #1a1816);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cc-service-tile:hover,
+  .cc-service-tile:focus-visible {
+    border-color: var(--bronze);
+    outline: none;
+  }
+
+  .cc-service-tile .icon-tile {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+  }
+
+  .cc-service-tile b {
+    display: block;
+    overflow: hidden;
+    font-size: 10px;
+    font-weight: 600;
+    color: #d9cdbb;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cc-service-tile strong {
+    display: block;
+    font: 800 15px Manrope, sans-serif;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cc-service-tile em {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow: hidden;
+    font-style: normal;
+    font-size: 9px;
+    color: #9c9284;
+    white-space: nowrap;
+  }
+
+  .cc-service-tile em i {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .cc-ai-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cc-ai-card .panel-title {
+    margin-bottom: 2px;
+  }
+
+  .cc-insight-text {
+    margin: 6px 0 0;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #e3d6c2;
+  }
+
+  .cc-insight-metric {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .cc-ai-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    align-self: flex-end;
+    margin-top: auto;
+    font-size: 10px;
+    color: #d7b77f;
+    text-decoration: none;
+  }
+
+  .cc-ai-link:hover {
+    color: var(--gold-light);
+  }
+
+  @media (max-width: 1279px) {
+    .cc-row {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    }
+
+    .cc-service-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .cc-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cc-service-tiles {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .cc-service-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cc-quick {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .cc-predicted {
+      position: static;
+      margin-bottom: 6px;
+      text-align: left;
+      justify-items: start;
+    }
+
+    .cc-predicted span {
+      justify-content: flex-start;
+    }
+  }
+}

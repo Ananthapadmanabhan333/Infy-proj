@@ -1,0 +1,136 @@
+/* SLA Monitor (reference screen 6). Area styles only — shared tokens and primitives live in styles.css. */
+@layer components {
+  .sla-row {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .sla-row.even {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sla-trend {
+    position: relative;
+  }
+
+  .sla-trend-callout {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    z-index: 2;
+    display: grid;
+    justify-items: end;
+    padding: 5px 10px;
+    border: 1px solid #6e5331;
+    border-radius: 9px;
+    background: rgba(27, 24, 22, 0.94);
+    box-shadow: 0 8px 22px #0006;
+    pointer-events: none;
+  }
+
+  .sla-trend-callout b {
+    font: 800 15px Manrope, sans-serif;
+    color: var(--gold-light);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sla-trend-callout small {
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  .sla-bars {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sla-bar-row {
+    display: grid;
+    grid-template-columns: auto minmax(90px, 1.1fr) minmax(60px, 1fr) 30px;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 6px;
+    border-radius: 9px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .sla-bar-row:hover,
+  .sla-bar-row:focus-visible {
+    background: #241f19;
+    outline: none;
+  }
+
+  .sla-bar-row .icon-tile {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  .sla-bar-name {
+    min-width: 0;
+  }
+
+  .sla-bar-name b {
+    display: block;
+    overflow: hidden;
+    font-size: 11px;
+    font-weight: 600;
+    color: #e3d7c4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sla-bar-name small {
+    display: block;
+    font-size: 9px;
+    color: #968b7c;
+  }
+
+  .sla-bar-track {
+    height: 7px;
+    border-radius: 8px;
+    background: #39332b;
+    overflow: hidden;
+  }
+
+  .sla-bar-track i {
+    display: block;
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--bronze), var(--gold));
+  }
+
+  .sla-bar-row strong {
+    font: 800 13px Manrope, sans-serif;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 1279px) {
+    .sla-row {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .sla-row,
+    .sla-row.even {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .sla-trend-callout {
+      position: static;
+      justify-items: start;
+      margin-bottom: 6px;
+      width: max-content;
+    }
+  }
+}

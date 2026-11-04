@@ -1,0 +1,512 @@
+/* Incident Management + Incident Detail (reference screens 2 and 3). Palette tokens only (spec §15). */
+/* In the components layer so Tailwind utilities on the same elements still win. */
+@layer components {
+  /* ------------------------------------------------------------- register */
+  .incident-toolbar {
+    margin-bottom: 0;
+  }
+
+  .incident-toolbar .toolbar-icon {
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+    border: 1px solid #3f3326;
+    border-radius: var(--radius-control);
+    background: var(--secondary);
+    color: var(--gold);
+  }
+
+  .incident-toolbar .toolbar-icon:hover {
+    border-color: var(--bronze);
+    background: var(--panel-raised);
+  }
+
+  .incident-register {
+    padding: 4px 6px;
+  }
+
+  /* Phones: search on its own row, then the dropdowns two per row. */
+  @media (max-width: 599px) {
+    .incident-toolbar .filter-select {
+      flex: 1 1 calc(50% - 4px);
+      max-width: none;
+    }
+
+    .incident-toolbar .filter-select select {
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+    }
+  }
+
+  .incident-register .data-table td,
+  .incident-register .data-table th {
+    white-space: nowrap;
+  }
+
+  /* --------------------------------------------------------------- header */
+  .page-heading.incident-heading {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .incident-heading .incident-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+  }
+
+  .incident-heading .incident-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .incident-number-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--panel-raised);
+    color: var(--text);
+    font: 800 13px Manrope, sans-serif;
+    letter-spacing: 0.2px;
+  }
+
+  .incident-heading .badge.priority {
+    font-size: 12px;
+    padding-inline: 10px;
+  }
+
+  .incident-heading h1 {
+    margin-top: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .incident-heading .incident-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .incident-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .incident-meta > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .incident-meta > span + span::before {
+    content: '•';
+    margin-right: 5px;
+    color: #6a5e4e;
+  }
+
+  .incident-meta svg {
+    color: var(--gold);
+  }
+
+  .incident-stepper {
+    padding: 4px 4% 16px;
+  }
+
+  .incident-stepper .stepper small {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ------------------------------------------------------------ more menu */
+  .incident-more-menu {
+    min-width: 220px;
+  }
+
+  .incident-more-menu .dropdown-item {
+    align-items: center;
+  }
+
+  .incident-more-menu .dropdown-item svg {
+    color: var(--gold);
+  }
+
+  .incident-more-menu .dropdown-item.danger,
+  .incident-more-menu .dropdown-item.danger svg {
+    color: var(--critical);
+  }
+
+  .incident-more-menu .dropdown-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .incident-more-menu hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 4px 2px;
+  }
+
+  /* --------------------------------------------------------------- layout */
+  .incident-layout {
+    display: grid;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .incident-layout > * {
+    min-width: 0;
+  }
+
+  .incident-main,
+  .incident-side,
+  .incident-tabpanel {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    min-width: 0;
+  }
+
+  .incident-tabpanel[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 1180px) {
+    .incident-layout {
+      grid-template-columns: minmax(0, 1.25fr) minmax(330px, 1fr);
+    }
+  }
+
+  /* ------------------------------------------------------- overview facts */
+  .incident-facts {
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .incident-facts > div {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .incident-facts dt {
+    color: #cfc4b3;
+    font-weight: 600;
+  }
+
+  .incident-facts dd {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: #e7ddcd;
+    min-width: 0;
+  }
+
+  .incident-facts .fact-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--warning);
+  }
+
+  .incident-facts .person {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .incident-facts .person small {
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  @media (max-width: 599px) {
+    .incident-facts > div {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+
+  /* --------------------------------------------- SA AI recommendation */
+  .ai-reco-card {
+    background: linear-gradient(160deg, #27211a, var(--panel) 70%);
+    border-color: #5f4a2f;
+  }
+
+  .ai-reco-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .ai-reco-head h3 {
+    flex: 1;
+    margin: 0;
+    font: 700 13px Manrope, sans-serif;
+    color: var(--text);
+  }
+
+  .ai-reco-head .ai-reco-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    background: var(--gold-soft);
+    border: 1px solid rgba(214, 183, 122, 0.3);
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .ai-match {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    background: var(--success-soft);
+    color: var(--success);
+    border: 1px solid rgba(73, 184, 137, 0.35);
+  }
+
+  .ai-match.medium {
+    background: var(--warning-soft);
+    color: var(--warning);
+    border-color: rgba(229, 174, 98, 0.35);
+  }
+
+  .ai-match.low {
+    background: var(--critical-soft);
+    color: var(--critical);
+    border-color: rgba(229, 109, 104, 0.35);
+  }
+
+  .ai-reco-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: #e7ddcd;
+    line-height: 1.5;
+    margin: 0 0 10px;
+  }
+
+  .ai-reco-line > svg {
+    color: var(--gold);
+    margin-top: 2px;
+  }
+
+  .ai-reco-line b {
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  .ai-checklist {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 12px 22px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ai-checklist label {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 12px;
+    color: #d9cdbb;
+    line-height: 1.45;
+    cursor: pointer;
+  }
+
+  .ai-checklist input {
+    margin-top: 2px;
+    width: 14px;
+    height: 14px;
+    accent-color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .ai-checklist .done span {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: #6a5e4e;
+  }
+
+  .ai-reco-card .apply-btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 11px 14px;
+    font-size: 12px;
+  }
+
+  .ai-reco-card .apply-btn:disabled {
+    opacity: 0.55;
+  }
+
+  .ai-reco-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  /* ------------------------------------------------------------- activity */
+  .activity-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .activity-filters button {
+    cursor: pointer;
+  }
+
+  .activity-filters button[aria-pressed='true'] {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: var(--gold-soft);
+  }
+
+  .activity-feed {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+
+  .activity-feed li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 10px;
+    padding-bottom: 14px;
+  }
+
+  .activity-feed li:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 30px;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .activity-feed .activity-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    background: var(--gold-soft);
+    color: var(--gold);
+    border: 1px solid rgba(214, 183, 122, 0.22);
+  }
+
+  .activity-feed .kind-escalation .activity-icon,
+  .activity-feed .kind-sla.breach .activity-icon {
+    background: var(--critical-soft);
+    color: var(--critical);
+    border-color: rgba(229, 109, 104, 0.3);
+  }
+
+  .activity-feed .kind-approval .activity-icon {
+    background: var(--warning-soft);
+    color: var(--warning);
+    border-color: rgba(229, 174, 98, 0.3);
+  }
+
+  .activity-feed .kind-runbook .activity-icon {
+    background: var(--success-soft);
+    color: var(--success);
+    border-color: rgba(73, 184, 137, 0.3);
+  }
+
+  .activity-feed b {
+    display: block;
+    font-size: 12px;
+    color: #eee4d6;
+    font-weight: 600;
+  }
+
+  .activity-feed p {
+    margin: 3px 0 0;
+    font-size: 11px;
+    color: #cfc4b3;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .activity-feed small {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    color: #968b7c;
+  }
+
+  /* ------------------------------------------------------------- ai panel */
+  .incident-ai-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .incident-ai-tools button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border-radius: 8px;
+    background: var(--panel-raised);
+    border: 1px solid #443729;
+    color: #d9cbb6;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .incident-ai-tools button svg {
+    color: var(--gold);
+  }
+
+  .incident-ai-tools button:hover:not(:disabled) {
+    border-color: var(--bronze);
+    color: var(--gold-light);
+  }
+
+  .incident-ai-tools button:disabled {
+    opacity: 0.55;
+  }
+}

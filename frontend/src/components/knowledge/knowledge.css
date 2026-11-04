@@ -1,0 +1,219 @@
+/* Knowledge Base (reference screen 9). Palette tokens come from styles.css (:root). */
+@layer components {
+  .kb-search {
+    width: 100%;
+    max-width: none;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 11px;
+    font-size: 12px;
+  }
+
+  .kb-search input {
+    font-size: 12px;
+  }
+
+  /* -------------------------------------------------------- category tiles */
+  .kb-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+  }
+
+  .kb-tile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: inherit;
+    text-align: left;
+    text-decoration: none;
+    transition:
+      border-color 0.15s,
+      background 0.15s;
+  }
+
+  .kb-tile:hover {
+    border-color: var(--bronze);
+    background: #221f1b;
+  }
+
+  .kb-tile.selected {
+    border-color: var(--gold);
+    background: #2a231a;
+  }
+
+  .kb-tile b {
+    display: block;
+    font: 700 13px Manrope, 'DM Sans', sans-serif;
+    color: var(--text);
+  }
+
+  .kb-tile small {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* ------------------------------------------------------------ article rows */
+  .kb-list {
+    display: grid;
+  }
+
+  .kb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 6px;
+    border-bottom: 1px solid var(--line-soft);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .kb-list > li:last-child .kb-row {
+    border-bottom: 0;
+  }
+
+  .kb-row:hover {
+    background: #221f1b;
+  }
+
+  .kb-row-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    border: 1px solid rgba(214, 183, 122, 0.26);
+    background: var(--gold-soft);
+    color: var(--gold);
+  }
+
+  .kb-row-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .kb-row-main b {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #eee4d6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .kb-row-main small {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin-top: 3px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .kb-row-main small .badge {
+    font-size: 9px;
+    padding: 1px 6px;
+  }
+
+  .kb-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .kb-row-meta .read {
+    min-width: 72px;
+    text-align: right;
+  }
+
+  .kb-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* ------------------------------------------------------------ article page */
+  .kb-status-note {
+    margin-bottom: 0;
+  }
+
+  .kb-versions {
+    display: grid;
+  }
+
+  .kb-versions li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .kb-versions li:last-child {
+    border-bottom: 0;
+  }
+
+  .kb-version-num {
+    min-width: 30px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--gold-soft);
+    color: var(--gold-light);
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .kb-versions b {
+    display: block;
+    font-size: 11px;
+    color: #eee4d6;
+  }
+
+  .kb-versions small {
+    display: block;
+    margin-top: 2px;
+    font-size: 9px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 599px) {
+    .kb-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .kb-tile {
+      padding: 11px;
+      gap: 9px;
+    }
+
+    .kb-row {
+      flex-wrap: wrap;
+    }
+
+    .kb-row-meta {
+      width: 100%;
+      padding-left: 42px;
+      gap: 12px;
+    }
+
+    .kb-row-meta .read {
+      text-align: left;
+    }
+  }
+}

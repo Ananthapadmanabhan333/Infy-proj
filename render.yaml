@@ -1,0 +1,48 @@
+# Render Blueprint for the SA API (Docker, Java 21). New > Blueprint, then pick this repository.
+# Values marked sync: false are prompted for in the dashboard and never stored in Git. See docs/DEPLOYMENT.md.
+services:
+  - type: web
+    name: nexus360-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    # free sleeps after 15 idle minutes (the SLA engine pauses with it); use starter or higher for production.
+    plan: free
+    region: singapore
+    healthCheckPath: /actuator/health/readiness
+    autoDeploy: true
+    envVars:
+      # Neon connection string (direct, non-pooled endpoint): postgresql://user:pass@ep-....neon.tech/neondb?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      # Browser origin(s) of the web app, comma separated, e.g. https://nexus360.vercel.app
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: COOKIE_SAME_SITE
+        value: None
+      - key: BOOTSTRAP_ADMIN_EMAIL
+        sync: false
+      - key: BOOTSTRAP_ADMIN_PASSWORD
+        sync: false
+      - key: APP_DEMO_SEED
+        value: "false"
+      - key: APP_DEMO_PASSWORD
+        sync: false
+      - key: AI_PROVIDER
+        value: none
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_MODEL
+        value: claude-opus-5-5
+      # 32 random bytes, base64 (openssl rand -base64 32). Optional: derived from JWT_SECRET when unset.
+      - key: INTEGRATION_ENCRYPTION_KEY
+        sync: false
+      - key: DB_POOL_MAX
+        value: "8"
+      - key: RATE_LIMIT_LOGIN_PER_MINUTE
+        value: "20"

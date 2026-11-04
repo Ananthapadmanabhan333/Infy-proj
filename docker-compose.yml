@@ -1,11 +1,15 @@
+# Full SA stack on one machine: PostgreSQL 17, Redis, the API and the web front end.
+#   cp .env.example .env    # then fill in the required values
+#   docker compose up --build
+# Web: http://localhost:3000 (nginx proxies /api to the API, so the refresh cookie is same-origin)
+# API: http://localhost:8080/api · Swagger UI: http://localhost:8080/swagger-ui.html
 services:
   postgres:
-    image: postgres:16-alpine
-    container_name: nexus360-postgres
+    image: postgres:17-alpine
     environment:
       POSTGRES_DB: nexus360
       POSTGRES_USER: nexus
-      POSTGRES_PASSWORD: nexus_dev_password
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
     ports: ["5432:5432"]
     volumes: ["nexus_pgdata:/var/lib/postgresql/data"]
     healthcheck:
@@ -13,25 +17,64 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
   redis:
     image: redis:7-alpine
-    container_name: nexus360-redis
-    ports: ["6379:6379"]
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   api:
     build: ./backend
-    container_name: nexus360-api
     environment:
       DATABASE_URL: jdbc:postgresql://postgres:5432/nexus360
       DATABASE_USER: nexus
-      DATABASE_PASSWORD: nexus_dev_password
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env (at least 32 characters)}
+      FRONTEND_ORIGIN: http://localhost:3000
+      # Plain HTTP on localhost: the refresh cookie cannot be Secure here. Hosted deployments keep the secure defaults.
+      COOKIE_SECURE: "false"
+      COOKIE_SAME_SITE: Lax
+      REDIS_ENABLED: "true"
+      REDIS_URL: redis://redis:6379
+      APP_DEMO_SEED: ${APP_DEMO_SEED:-true}
+      APP_DEMO_PASSWORD: ${APP_DEMO_PASSWORD:-}
+      APP_DEMO_SHOW_PASSWORD: ${APP_DEMO_SHOW_PASSWORD:-false}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
+      AI_PROVIDER: ${AI_PROVIDER:-none}
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-claude-opus-5-5}
+      INTEGRATION_ENCRYPTION_KEY: ${INTEGRATION_ENCRYPTION_KEY:-}
+      APP_PUBLIC_URL: ${APP_PUBLIC_URL:-http://localhost:3000}
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      MAIL_STARTTLS: ${MAIL_STARTTLS:-true}
     ports: ["8080:8080"]
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080 && printf \"GET /actuator/health/readiness HTTP/1.0\\r\\n\\r\\n\" >&3 && grep -q UP <&3'"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 30s
+
   web:
     build: ./frontend
-    container_name: nexus360-web
     ports: ["3000:80"]
-    depends_on: [api]
+    depends_on:
+      api:
+        condition: service_healthy
+
 volumes:
   nexus_pgdata:

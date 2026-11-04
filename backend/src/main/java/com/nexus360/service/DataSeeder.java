@@ -1,5 +1,0 @@
-package com.nexus360.service;
-import com.nexus360.model.Incident;import com.nexus360.repository.IncidentRepository;import org.springframework.boot.CommandLineRunner;import org.springframework.context.annotation.Bean;import org.springframework.context.annotation.Configuration;
-@Configuration public class DataSeeder {
- @Bean CommandLineRunner seedIncidents(IncidentRepository repo){return args->{if(repo.count()>0)return;String[][] rows={{"Payroll application not accessible","Critical","Payroll","Riya V.","In Progress","18 min"},{"High latency in VPN connection (APAC)","High","Network","Arjun K.","Investigating","42 min"},{"HR portal intermittently failing","High","HR Portal","Meera S.","In Progress","1 h 14 m"},{"Email synchronization delay","Medium","Email","Dev N.","Open","2 h 6 m"},{"Printer not working in Block A","Medium","Facilities","Vishal K.","Resolved","—"}};for(String[] r:rows){Incident i=new Incident();i.setTitle(r[0]);i.setPriority(r[1]);i.setService(r[2]);i.setAssignee(r[3]);i.setStatus(r[4]);i.setSla(r[5]);repo.save(i);}};}
-}
