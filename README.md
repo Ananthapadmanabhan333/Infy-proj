@@ -2,9 +2,27 @@
 
 *Intelligent Service Management. Unified Operations.*
 
+[![Live App](https://img.shields.io/badge/Live_App-nexus360--three.vercel.app-0f766e?style=for-the-badge&logo=vercel)](https://nexus360-three.vercel.app)
+[![Backend API](https://img.shields.io/badge/API_Health-UP_(Java_21_%2B_Spring_Boot_3.5)-1d4ed8?style=for-the-badge)](https://nexus360-three.vercel.app/api/health)
+[![Database](https://img.shields.io/badge/PostgreSQL_17-Neon_Serverless_(V1--V13)-059669?style=for-the-badge&logo=postgresql)](https://nexus360-three.vercel.app/api/health)
+[![Tests](https://img.shields.io/badge/Tests-1%2C076_Passing_(346_JUnit_%7C_700_Vitest_%7C_30_E2E)-7c3aed?style=for-the-badge)](#9-automated-test-suites)
+
 **SA** is a production-grade, full-stack **IT Service Management (ITSM)**, **IT Operations Management (ITOM)**, **Autonomous Operations (AIOps)**, and **Enterprise Operations (SecOps, FinOps, DEX)** platform built with **Java 21 / Spring Boot 3.5**, **React 18 / TypeScript / Vite 6**, and **PostgreSQL 17** (Flyway migrations `V1`–`V13`).
 
 Every figure on screen is computed from real database records. Seeded demonstration records carry a **DEMO** badge. Synthetic faults, telemetry, vulnerability waves, cost spikes, and endpoint degradations are generated only when **Simulation Mode** is explicitly enabled (`simulated = true`), carry a **SIMULATION** badge, and are excluded from operational KPIs and reports by default.
+
+---
+
+## Live Production Deployment
+
+| Endpoint / Resource | Live URL | Details |
+|---|---|---|
+| **Web Application (Frontend SPA)** | **[https://nexus360-three.vercel.app](https://nexus360-three.vercel.app)** | React 18 + Vite 6 + Tailwind CSS v4 on Vercel Global Edge CDN |
+| **Sign-In Portal (with 1-Click Role Pills)** | **[https://nexus360-three.vercel.app/login](https://nexus360-three.vercel.app/login)** | Demo password for all 28 seeded accounts: `Nexus360!Demo` |
+| **Public Live Service Status Page** | **[https://nexus360-three.vercel.app/status](https://nexus360-three.vercel.app/status)** | Real-time status components, active outages & maintenance windows |
+| **Same-Origin API Health Check** | **[https://nexus360-three.vercel.app/api/health](https://nexus360-three.vercel.app/api/health)** | Returns `{"service":"SA API","version":"2.0.0","status":"UP","database":"UP"}` |
+| **Backend Container API (`iad1`)** | **[https://nexus360-api.vercel.app/api/health](https://nexus360-api.vercel.app/api/health)** | Java 21 / Spring Boot 3.5 OCI Container (`Dockerfile.vercel`) in `us-east-1` (`iad1`) |
+| **Database (`us-east-1`)** | **Neon PostgreSQL 17.11 (`nexus360`)** | 13 Flyway migrations (`V1`–`V13`) applied + 28 demo users across 11 roles seeded |
 
 ---
 
@@ -335,23 +353,26 @@ Latest verified results are recorded in **[PROJECT_STATUS.md](PROJECT_STATUS.md)
 
 ---
 
-## 10. Production Cloud Deployment (Neon + Render + Vercel)
+## 10. Production Cloud Deployment (Vercel + Neon + Render)
 
-Full step-by-step instructions are in **[DEPLOYMENT.md](DEPLOYMENT.md)** and **[docs/NEON.md](docs/NEON.md)**:
+Full step-by-step instructions are in **[DEPLOYMENT.md](DEPLOYMENT.md)**, **[DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md)**, and **[docs/NEON.md](docs/NEON.md)**:
 
 ```
- Browser ──HTTPS──▶ Vercel (frontend/dist, static SPA)
+ Browser ──HTTPS──▶ Vercel Frontend ("nexus360-three.vercel.app", static SPA)
                      │  /api/* same-origin rewrite (frontend/vercel.json)
                      ▼
-                   Render Web Service "nexus360-api" (Docker, Java 21, Spring Boot 3.5)
-                     │  JDBC over TLS, Flyway V1–V13 migrations on startup
+                   Vercel Container Function ("nexus360-api.vercel.app", Java 21 / Spring Boot 3.5, region: iad1)
+                   (or Render Web Service via render.yaml)
+                     │  JDBC over TLS (us-east-1)
                      ▼
-                   Neon PostgreSQL 17
+                   Neon PostgreSQL 17.11 ("nexus360" database, Flyway V1–V13)
 ```
 
-1. **Neon (Database)**: Create a PostgreSQL 17 project and copy the **direct (non-pooled)** connection string (`postgresql://...neon.tech/neondb?sslmode=require`).
-2. **Render (Backend API)**: Create a **New → Blueprint** pointing to this repository ([`render.yaml`](render.yaml)). Set `DATABASE_URL`, `BOOTSTRAP_ADMIN_EMAIL`, `BOOTSTRAP_ADMIN_PASSWORD`, and `FRONTEND_ORIGIN`. Verify `/actuator/health/readiness` returns `{"status":"UP"}`.
-3. **Vercel (Frontend SPA)**: Import the repository with **Root Directory** = `frontend`. Update the `/api/:path*` rewrite destination in [`frontend/vercel.json`](frontend/vercel.json) if your Render service name differs from `nexus360-api.onrender.com`.
+1. **Neon (Database)**: Create a PostgreSQL 17 project (`us-east-1`) with a dedicated `nexus360` database and copy the **direct (non-pooled)** connection string (`postgresql://...neon.tech/nexus360?sslmode=require`).
+2. **Backend API (`backend/Dockerfile.vercel` or `render.yaml`)**:
+   - **Vercel Container Function (Live at [`https://nexus360-api.vercel.app`](https://nexus360-api.vercel.app))**: Built from [`backend/Dockerfile.vercel`](backend/Dockerfile.vercel) with layered JAR extraction, JVM AppCDS (`-Xshare:auto`), C1 tiered compilation, and lazy JPA repository bootstrapping, pinned to `iad1` (`us-east-1`) in [`backend/vercel.json`](backend/vercel.json).
+   - **Render Blueprint (Alternative)**: Apply [`render.yaml`](render.yaml) on Render (`FRONTEND_ORIGIN=https://nexus360-three.vercel.app` pre-configured).
+3. **Frontend SPA (Live at [`https://nexus360-three.vercel.app`](https://nexus360-three.vercel.app))**: Deployed from `frontend/` with [`frontend/vercel.json`](frontend/vercel.json) proxying same-origin `/api/:path*` requests to `https://nexus360-api.vercel.app/api/:path*`.
 
 ---
 
